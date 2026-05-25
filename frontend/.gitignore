@@ -1,0 +1,18 @@
+###> Next.js ###
+/.next/
+/out/
+/build
+###< Next.js ###
+
+###> Node ###
+/node_modules/
+npm-debug.log*
+###< Node ###
+
+###> Env ###
+.env*.local
+###< Env ###
+
+###> Coverage ###
+/coverage/
+###< Coverage ###
