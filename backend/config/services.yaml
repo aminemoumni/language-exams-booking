@@ -1,0 +1,19 @@
+parameters:
+
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+
+    App\:
+        resource: '../src/'
+        exclude:
+            - '../src/DependencyInjection/'
+            - '../src/Document/'
+            - '../src/Kernel.php'
+
+    # Tag fixtures for MongoDB ODM loader
+    App\DataFixtures\:
+        resource: '../src/DataFixtures/'
+        tags:
+            - { name: doctrine.fixture.odm.mongodb }

@@ -1,0 +1,44 @@
+security:
+    # ─── Password hashing ────────────────────────────────────────────────────
+    password_hashers:
+        App\Document\User:
+            algorithm: auto   # bcrypt/argon2id selon disponibilité
+
+    # ─── User providers ──────────────────────────────────────────────────────
+    providers:
+        app_user_provider:
+            id: App\Security\UserProvider
+
+    # ─── Firewalls ───────────────────────────────────────────────────────────
+    firewalls:
+        dev:
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+
+        # Public: register
+        auth_register:
+            pattern: ^/api/auth/register
+            stateless: true
+            security: false
+
+        # Public: login — intercepted by json_login before reaching the controller
+        auth_login:
+            pattern: ^/api/auth/login
+            stateless: true
+            json_login:
+                check_path:       api_auth_login   # nom de la route (pas le path)
+                username_path:    email             # champ JSON utilisé comme identifiant
+                password_path:    password
+                success_handler:  lexik_jwt_authentication.handler.authentication_success
+                failure_handler:  lexik_jwt_authentication.handler.authentication_failure
+
+        # All other /api routes require valid JWT
+        api:
+            pattern: ^/api
+            stateless: true
+            jwt: ~
+
+    # ─── Access control ──────────────────────────────────────────────────────
+    access_control:
+        - { path: ^/api/auth,  roles: PUBLIC_ACCESS }
+        - { path: ^/api,       roles: IS_AUTHENTICATED_FULLY }

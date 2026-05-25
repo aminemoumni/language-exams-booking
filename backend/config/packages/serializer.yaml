@@ -1,0 +1,6 @@
+framework:
+    serializer:
+        enable_attributes: true
+        default_context:
+            # ISO 8601 pour toutes les dates (ex: 2026-05-23T14:00:00+00:00)
+            datetime_format: "Y-m-d\\TH:i:sP"
