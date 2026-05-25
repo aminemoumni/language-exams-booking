@@ -202,12 +202,20 @@ export default function LoginPage() {
                   )}
                 </button>
 
-                <p className="text-center text-xs text-slate-500">
-                  Demo — admin:{' '}
-                  <span className="font-mono text-slate-700">admin@ets.com</span>
-                  {' '}/{' '}
-                  <span className="font-mono text-slate-700">Admin1234!</span>
-                </p>
+                <div className="rounded-lg border border-slate-100 bg-slate-50 px-4 py-3 text-center text-xs text-slate-500 space-y-1">
+                  <p>
+                    <span className="font-medium text-slate-600">Admin — </span>
+                    <span className="font-mono text-slate-700">admin@ets.com</span>
+                    {' / '}
+                    <span className="font-mono text-slate-700">0123456789</span>
+                  </p>
+                  <p>
+                    <span className="font-medium text-slate-600">User &nbsp;— </span>
+                    <span className="font-mono text-slate-700">user@ets.com</span>
+                    {' / '}
+                    <span className="font-mono text-slate-700">0123456789</span>
+                  </p>
+                </div>
               </form>
             )}
 
