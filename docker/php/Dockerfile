@@ -8,11 +8,13 @@ RUN apk add --no-cache \
     zip \
     unzip \
     openssl \
+    openssl-dev \
     icu-dev \
     oniguruma-dev \
     autoconf \
     g++ \
-    make
+    make \
+    pkgconf
 
 # PHP extensions
 RUN docker-php-ext-install \
@@ -20,7 +22,9 @@ RUN docker-php-ext-install \
     intl \
     mbstring
 
-# MongoDB extension via PECL (tout en une seule couche)
+# MongoDB extension via PECL
+# openssl-dev must be present BEFORE this step so libmongoc is compiled
+# with ENABLE_SSL → SCRAM_SHA_256 support
 RUN pecl install mongodb \
     && docker-php-ext-enable mongodb
 
@@ -39,7 +43,9 @@ RUN composer install --prefer-dist --no-scripts --no-autoloader
 COPY . .
 
 RUN composer dump-autoload --optimize \
-    && chown -R www-data:www-data var
+    && mkdir -p var/cache var/log var/cache/doctrine/odm/mongodb/Hydrators var/cache/doctrine/odm/mongodb/Proxies \
+    && chown -R www-data:www-data var \
+    && chmod -R 777 var
 
 EXPOSE 9000
 CMD ["php-fpm"]
