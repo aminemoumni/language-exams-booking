@@ -20,10 +20,10 @@ export default function Navbar() {
   }
 
   const navLinks = [
-    { href: '/sessions',     label: 'Sessions' },
-    { href: '/reservations', label: 'My Bookings' },
-    { href: '/account',      label: 'Account' },
-  ]
+    { href: '/sessions',     label: 'Sessions',    adminOnly: false },
+    { href: '/reservations', label: 'My Bookings', adminOnly: false, hideForAdmin: true },
+    { href: '/account',      label: 'Account',     adminOnly: false },
+  ].filter((link) => !(link.hideForAdmin && isAdmin))
 
   return (
     <header className="sticky top-0 z-50 border-b border-white/10 bg-ets-blue shadow-md">
