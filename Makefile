@@ -1,6 +1,6 @@
 .DEFAULT_GOAL := help
 .PHONY: help up down build restart logs shell-backend shell-frontend shell-mongo \
-        jwt-keys schema fixtures setup reset test-backend test-frontend test
+        install jwt-keys schema fixtures setup reset test-backend test-frontend test
 
 # Read credentials from .env so targets don't need hardcoded values.
 # ?= means "only set if not already defined in the environment".
@@ -39,6 +39,11 @@ shell-frontend: ## Open a shell inside the frontend container
 
 shell-mongo: ## Open a mongosh session as root (reads credentials from .env)
 	docker compose exec mongodb mongosh -u $(MONGO_ROOT_USER) -p $(MONGO_ROOT_PASSWORD)
+
+# ─── Dependencies ─────────────────────────────────────────────────────────────
+install: ## Install backend (Composer) and frontend (npm) dependencies inside containers
+	docker compose exec backend composer install --no-interaction --prefer-dist --optimize-autoloader
+	docker compose exec frontend npm ci
 
 # ─── JWT keys ─────────────────────────────────────────────────────────────────
 jwt-keys: ## Generate RSA key pair for JWT using the bundle's own command
