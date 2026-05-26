@@ -137,7 +137,7 @@ export default function SessionFormModal({
         </div>
 
         {/* ── Form ── */}
-        <form onSubmit={handleSubmit} className="space-y-4 px-6 py-5">
+        <form onSubmit={handleSubmit} noValidate className="space-y-4 px-6 py-5">
 
           {(localError || error) && (
             <div className="alert-error">{localError ?? error}</div>
