@@ -41,7 +41,7 @@ shell-mongo: ## Open a mongosh session as root (reads credentials from .env)
 	docker compose exec mongodb mongosh -u $(MONGO_ROOT_USER) -p $(MONGO_ROOT_PASSWORD)
 
 # ─── Dependencies ─────────────────────────────────────────────────────────────
-install: ## Install backend (Composer) and frontend (npm) dependencies inside containers
+install: ## Re-install dependencies inside containers (use after adding a package)
 	docker compose exec backend composer install --no-interaction --prefer-dist --optimize-autoloader
 	docker compose exec frontend npm ci
 

@@ -31,23 +31,24 @@ No local PHP or Node.js installation required — everything runs inside contain
 
 ```bash
 # 1. Build Docker images and start all containers
-#    (--build is included — safe to re-run on subsequent starts too)
+#    Dependencies (Composer + npm) are installed inside the Dockerfiles —
+#    no separate install step needed.
 make up
 
-# 2. Install backend (Composer) and frontend (npm) dependencies
-make install
-
-# 3. Generate the RSA key pair used for JWT signing
+# 2. Generate the RSA key pair used for JWT signing
 make jwt-keys
 
-# 4. Create MongoDB indexes and seed demo data
+# 3. Create MongoDB indexes and seed demo data
 make setup
 ```
 
-The application is now available at **http://localhost**.
+The application is now available at **http://localhost:8000**.
 
 > **Subsequent starts.** `make up` re-uses cached layers so it is fast after the first build.  
 > Use `make build` to force a full rebuild without cache (e.g. after changing a Dockerfile).
+
+> **Changing the port.** Edit `HTTP_PORT` **and** `NEXT_PUBLIC_API_URL` together in `.env`,
+> then restart with `make up`. Both must use the same port or the frontend will hit a CORS error.
 
 ---
 
@@ -55,8 +56,8 @@ The application is now available at **http://localhost**.
 
 | Service | URL |
 |---|---|
-| Application (frontend) | http://localhost |
-| REST API | http://localhost/api |
+| Application (frontend) | http://localhost:8000 |
+| REST API | http://localhost:8000/api |
 | MongoDB | mongodb://localhost:27017 |
 
 Nginx is the single entry point on port 80:
@@ -86,7 +87,7 @@ Run `make help` to list all available targets with descriptions.
 make up              Start all containers
 make down            Stop all containers
 make build           Rebuild images (no cache)
-make install         Install Composer + npm dependencies inside containers
+make install         Re-install Composer + npm dependencies (after adding a package)
 make jwt-keys        Generate RSA key pair for JWT
 make setup           Create MongoDB indexes + load fixtures
 make reset           Drop schema → recreate indexes → reload fixtures
