@@ -143,8 +143,10 @@ describe('SessionFormModal', () => {
     })
 
     it('disables the submit button while loading', () => {
-      render(<SessionFormModal {...baseProps} loading />)
-      expect(screen.getByRole('button', { name: /create session/i })).toBeDisabled()
+      const { container } = render(<SessionFormModal {...baseProps} loading />)
+      // When loading=true the button shows a spinner instead of text, so its
+      // accessible name is "". Query by type attribute to stay unambiguous.
+      expect(container.querySelector('button[type="submit"]')).toBeDisabled()
     })
   })
 })
