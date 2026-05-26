@@ -15,13 +15,13 @@ help: ## Show available targets
 	  | awk 'BEGIN {FS = ":.*?## "}; {printf "  \033[36m%-20s\033[0m %s\n", $$1, $$2}'
 
 # ─── Docker ───────────────────────────────────────────────────────────────────
-up: ## Start all containers
-	docker compose up -d
+up: ## Build images (if needed) and start all containers
+	docker compose up -d --build
 
 down: ## Stop all containers
 	docker compose down
 
-build: ## Rebuild images (no cache)
+build: ## Force a full image rebuild (no cache) — use after Dockerfile changes
 	docker compose build --no-cache
 
 restart: ## Restart all containers

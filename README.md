@@ -30,7 +30,8 @@ No local PHP or Node.js installation required — everything runs inside contain
 ## First-run setup
 
 ```bash
-# 1. Start all containers (MongoDB, PHP-FPM, Next.js, Nginx)
+# 1. Build Docker images and start all containers
+#    (--build is included — safe to re-run on subsequent starts too)
 make up
 
 # 2. Install backend (Composer) and frontend (npm) dependencies
@@ -45,7 +46,8 @@ make setup
 
 The application is now available at **http://localhost**.
 
-> **First time only.** After the initial setup, `make up` is all you need to restart.
+> **Subsequent starts.** `make up` re-uses cached layers so it is fast after the first build.  
+> Use `make build` to force a full rebuild without cache (e.g. after changing a Dockerfile).
 
 ---
 
