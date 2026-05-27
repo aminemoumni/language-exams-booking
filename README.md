@@ -27,6 +27,53 @@ No local PHP or Node.js installation required — everything runs inside contain
 
 ---
 
+## Performance tips
+
+### Run the project files inside WSL (Windows only)
+
+If you are on Windows with **Docker Desktop**, performance depends heavily on where the project files live:
+
+| File location | I/O speed | Recommendation |
+|---|---|---|
+| Windows filesystem (`C:\Users\...`) | Slow — every file access crosses the WSL boundary | ❌ Avoid |
+| WSL 2 filesystem (`~/` inside Ubuntu) | Native Linux speed | ✅ Recommended |
+
+Clone and work on the project from inside your WSL distribution:
+
+```bash
+# Inside WSL terminal
+cd ~
+git clone <repo-url>
+cd language_exams_test_technique
+make up
+```
+
+### Allocate enough memory to WSL 2
+
+Docker Desktop's containers run inside the WSL 2 VM. By default WSL 2 is limited to
+50 % of your RAM (capped at 8 GB). This stack runs PHP-FPM + MongoDB + Next.js, so
+**at least 4 GB** is recommended, 6–8 GB for a comfortable experience.
+
+Create or edit `%USERPROFILE%\.wslconfig` (i.e. `C:\Users\<you>\.wslconfig`):
+
+```ini
+[wsl2]
+memory=6GB      # Total RAM available to the WSL 2 VM
+processors=4    # Number of virtual CPU cores (optional but helpful)
+swap=2GB        # Optional swap space
+```
+
+Then restart the WSL VM for the settings to take effect:
+
+```powershell
+# In PowerShell or CMD
+wsl --shutdown
+```
+
+Reopen Docker Desktop (it restarts WSL automatically) and run `make up` again.
+
+---
+
 ## First-run setup
 
 ```bash
