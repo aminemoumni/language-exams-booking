@@ -42,13 +42,13 @@ make jwt-keys
 make setup
 ```
 
-The application is now available at **http://localhost:8000**.
+The application is now available at **http://localhost:8001**.
 
 > **Subsequent starts.** `make up` re-uses cached layers so it is fast after the first build.  
 > Use `make build` to force a full rebuild without cache (e.g. after changing a Dockerfile).
 
-> **Changing the port.** Edit `HTTP_PORT` **and** `NEXT_PUBLIC_API_URL` together in `.env`,
-> then restart with `make up`. Both must use the same port or the frontend will hit a CORS error.
+> **Changing the port.** Edit `HTTP_PORT` in `.env`,
+> then restart with `make up`.
 
 ---
 
@@ -56,8 +56,8 @@ The application is now available at **http://localhost:8000**.
 
 | Service | URL |
 |---|---|
-| Application (frontend) | http://localhost:8000 |
-| REST API | http://localhost:8000/api |
+| Application (frontend) | http://localhost:8001 |
+| REST API | http://localhost:8001/api |
 | MongoDB | mongodb://localhost:27017 |
 
 Nginx is the single entry point on port 80:

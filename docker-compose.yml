@@ -21,7 +21,7 @@ services:
       timeout: 5s
       retries: 5
     networks:
-      - app-network
+      - app-network-ets-test-amine
 
   # ─── Symfony Backend (PHP-FPM) ───────────────────────────────────────────────
   backend:
@@ -48,7 +48,7 @@ services:
       mongodb:
         condition: service_healthy
     networks:
-      - app-network
+      - app-network-ets-test-amine
 
   # ─── Next.js Frontend ────────────────────────────────────────────────────────
   frontend:
@@ -68,7 +68,7 @@ services:
     depends_on:
       - backend
     networks:
-      - app-network
+      - app-network-ets-test-amine
 
   # ─── Nginx Reverse Proxy ─────────────────────────────────────────────────────
   nginx:
@@ -84,7 +84,7 @@ services:
       - backend
       - frontend
     networks:
-      - app-network
+      - app-network-ets-test-amine
 
 volumes:
   mongodb_data:
@@ -97,5 +97,5 @@ volumes:
     driver: local
 
 networks:
-  app-network:
+  app-network-ets-test-amine:
     driver: bridge
