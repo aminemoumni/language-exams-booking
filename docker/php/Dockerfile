@@ -45,10 +45,20 @@ COPY . .
 RUN composer dump-autoload --optimize
 
 # Entrypoint: recreates var/ directories and fixes permissions on every start.
-# This is necessary because the docker-compose bind mount (./backend:/var/www/html)
-# overlays the var/ directory built into the image, so permissions must be
-# re-applied at runtime rather than only at build time.
-COPY --chmod=755 docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
+# Written inline to avoid a COPY from the build context (./backend).
+# The script is placed outside /var/www/html so the bind mount cannot overwrite it.
+RUN { \
+      echo '#!/bin/sh'; \
+      echo 'set -e'; \
+      echo 'mkdir -p var/cache/dev var/cache/test var/cache/prod \'; \
+      echo '         var/cache/doctrine/odm/mongodb/Hydrators \'; \
+      echo '         var/cache/doctrine/odm/mongodb/Proxies \'; \
+      echo '         var/log'; \
+      echo 'chown -R www-data:www-data var 2>/dev/null || true'; \
+      echo 'chmod -R 775 var'; \
+      echo 'exec "$@"'; \
+    } > /usr/local/bin/docker-entrypoint.sh \
+    && chmod +x /usr/local/bin/docker-entrypoint.sh
 
 EXPOSE 9000
 ENTRYPOINT ["docker-entrypoint.sh"]
